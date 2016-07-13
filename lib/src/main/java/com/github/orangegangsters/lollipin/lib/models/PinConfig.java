@@ -58,7 +58,7 @@ public class PinConfig {
         this.logoId = logoId;
     }
 
-    public boolean isShowForgot() {
+    public boolean shouldShowForgot() {
         return showForgot;
     }
 
