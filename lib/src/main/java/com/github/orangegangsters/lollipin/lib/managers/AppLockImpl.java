@@ -15,6 +15,7 @@ import com.github.orangegangsters.lollipin.lib.PinFragmentActivity;
 import com.github.orangegangsters.lollipin.lib.encryption.Encryptor;
 import com.github.orangegangsters.lollipin.lib.enums.Algorithm;
 import com.github.orangegangsters.lollipin.lib.interfaces.LifeCycleInterface;
+import com.github.orangegangsters.lollipin.lib.models.PinConfig;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -66,6 +67,10 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
      */
     private static final String FINGERPRINT_AUTH_ENABLED_PREFERENCE_KEY = "FINGERPRINT_AUTH_ENABLED_PREFERENCE_KEY";
     /**
+     *
+     */
+    private static final String PIN_CONFIG_PREFERENCE_KEY = "PIN_CONFIG_PREFERENCE_KEY";
+    /**
      * The default password salt
      */
     private static final String DEFAULT_PASSWORD_SALT = "7xn7@c$";
@@ -97,6 +102,9 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
      */
     private static AppLockImpl mInstance;
 
+
+    private PinConfig pinConfig;
+
     /**
      * Static method that allows to get back the current static Instance of {@link AppLockImpl}
      *
@@ -117,17 +125,21 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
         super();
         this.mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.mActivityClass = activityClass;
+        this.pinConfig = new PinConfig();
     }
 
     @Override
     public void setTimeout(long timeout) {
+        pinConfig.setTimeoutMills(timeout);
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putLong(TIMEOUT_MILLIS_PREFERENCE_KEY, timeout);
+//        editor.putLong(TIMEOUT_MILLIS_PREFERENCE_KEY, timeout);
+        editor.putString(PIN_CONFIG_PREFERENCE_KEY, PinConfig.toJsonString(pinConfig));
         editor.apply();
     }
 
     public String getSalt() {
-        String salt = mSharedPreferences.getString(PASSWORD_SALT_PREFERENCE_KEY, null);
+//        String salt = mSharedPreferences.getString(PASSWORD_SALT_PREFERENCE_KEY, null);
+        String salt = PinConfig.fromJson(mSharedPreferences.getString(PIN_CONFIG_PREFERENCE_KEY, null)).getPasswordSalt();
         if (salt == null) {
             salt = generateSalt();
             setSalt(salt);
@@ -137,7 +149,9 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
 
     private void setSalt(String salt) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(PASSWORD_SALT_PREFERENCE_KEY, salt);
+//        editor.putString(PASSWORD_SALT_PREFERENCE_KEY, salt);
+        pinConfig.setPasswordSalt(salt);
+        editor.putString(PIN_CONFIG_PREFERENCE_KEY, PinConfig.toJsonString(pinConfig));
         editor.apply();
     }
 

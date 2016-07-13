@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 public abstract class AppLock {
     /**
-     * ENABLE_PINLOCK type, uses at firt to define the password
+     * ENABLE_PINLOCK type, uses at first to define the password
      */
     public static final int ENABLE_PINLOCK = 0;
     /**
