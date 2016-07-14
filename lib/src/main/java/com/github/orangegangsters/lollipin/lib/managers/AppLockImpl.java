@@ -251,7 +251,9 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
         PinActivity.clearListeners();
         PinCompatActivity.clearListeners();
         PinFragmentActivity.clearListeners();
-        mSharedPreferences.edit().remove(PASSWORD_PREFERENCE_KEY)
+        mSharedPreferences.edit().remove(PIN_CONFIG_PREFERENCE_KEY)
+                .apply();
+        /*mSharedPreferences.edit().remove(PASSWORD_PREFERENCE_KEY)
                 .remove(LAST_ACTIVE_MILLIS_PREFERENCE_KEY)
                 .remove(PASSWORD_ALGORITHM_PREFERENCE_KEY)
                 .remove(TIMEOUT_MILLIS_PREFERENCE_KEY)
@@ -259,7 +261,7 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
                 .remove(SHOW_FORGOT_PREFERENCE_KEY)
                 .remove(FINGERPRINT_AUTH_ENABLED_PREFERENCE_KEY)
                 .remove(ONLY_BACKGROUND_TIMEOUT_PREFERENCE_KEY)
-                .apply();
+                .apply();*/
     }
 
     @Override
