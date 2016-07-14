@@ -126,7 +126,6 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
         super();
         this.mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.mActivityClass = activityClass;
-        this.pinConfig = new PinConfig();
     }
 
     @Override
@@ -472,6 +471,16 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
     }
 
     public void setSharedPrefKey(String email){
-        PIN_CONFIG_PREFERENCE_KEY = PIN_CONFIG_PREFERENCE_PREFIX + email;
+        if(email.isEmpty() || email==null){
+            PIN_CONFIG_PREFERENCE_KEY = null;
+        }
+        else{
+            PIN_CONFIG_PREFERENCE_KEY = PIN_CONFIG_PREFERENCE_PREFIX + email;
+        }
+    }
+
+    @Override
+    public void setPinConfig(PinConfig pinConfig) {
+        this.pinConfig = pinConfig;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.github.orangegangsters.lollipin.lib.PinActivity;
 import com.github.orangegangsters.lollipin.lib.PinCompatActivity;
 import com.github.orangegangsters.lollipin.lib.PinFragmentActivity;
+import com.github.orangegangsters.lollipin.lib.models.PinConfig;
 
 /**
  * Allows to handle the {@link com.github.orangegangsters.lollipin.lib.managers.AppLock} from within
@@ -51,6 +52,7 @@ public class LockManager<T extends AppLockActivity> {
             mAppLocker.disable();
         }
         mAppLocker = AppLockImpl.getInstance(context, activityClass);
+        mAppLocker.setPinConfig(new PinConfig());
         mAppLocker.setSharedPrefKey(email);
         mAppLocker.enable();
     }
@@ -68,6 +70,8 @@ public class LockManager<T extends AppLockActivity> {
      */
     public void disableAppLock() {
         if (mAppLocker != null) {
+            mAppLocker.setPinConfig(null);
+            mAppLocker.setSharedPrefKey(null);
             mAppLocker.disable();
         }
         mAppLocker = null;

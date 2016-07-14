@@ -2,6 +2,8 @@ package com.github.orangegangsters.lollipin.lib.managers;
 
 import android.app.Activity;
 
+import com.github.orangegangsters.lollipin.lib.models.PinConfig;
+
 import java.util.HashSet;
 
 public abstract class AppLock {
@@ -206,4 +208,6 @@ public abstract class AppLock {
     public abstract String getSharedPrefKey();
 
     public abstract void setSharedPrefKey(String email);
+
+    public abstract void setPinConfig(PinConfig pinConfig);
 }
