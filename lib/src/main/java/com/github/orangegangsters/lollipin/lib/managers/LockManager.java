@@ -34,6 +34,14 @@ public class LockManager<T extends AppLockActivity> {
         return mInstance;
     }
 
+    public void enableAppLock(Context context, Class<T> activityClass) {
+        if (mAppLocker != null) {
+            mAppLocker.disable();
+        }
+        mAppLocker = AppLockImpl.getInstance(context, activityClass);
+        mAppLocker.enable();
+    }
+
     /**
      * You must call that into your custom {@link android.app.Application} to enable the
      * {@link com.github.orangegangsters.lollipin.lib.PinActivity}
