@@ -38,11 +38,12 @@ public class LockManager<T extends AppLockActivity> {
      * You must call that into your custom {@link android.app.Application} to enable the
      * {@link com.github.orangegangsters.lollipin.lib.PinActivity}
      */
-    public void enableAppLock(Context context, Class<T> activityClass) {
+    public void enableAppLock(Context context, Class<T> activityClass, String email) {
         if (mAppLocker != null) {
             mAppLocker.disable();
         }
         mAppLocker = AppLockImpl.getInstance(context, activityClass);
+        mAppLocker.setSharedPrefKey(email);
         mAppLocker.enable();
     }
 
@@ -80,4 +81,5 @@ public class LockManager<T extends AppLockActivity> {
     public AppLock getAppLock() {
         return mAppLocker;
     }
+
 }

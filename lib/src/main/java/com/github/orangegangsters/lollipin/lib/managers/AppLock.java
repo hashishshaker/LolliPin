@@ -203,5 +203,7 @@ public abstract class AppLock {
      */
     public abstract boolean shouldLockSceen(Activity activity);
 
+    public abstract String getSharedPrefKey();
 
+    public abstract void setSharedPrefKey(String email);
 }
