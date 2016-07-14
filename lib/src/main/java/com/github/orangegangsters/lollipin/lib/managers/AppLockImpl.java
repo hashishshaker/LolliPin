@@ -471,7 +471,7 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
     }
 
     public void setSharedPrefKey(String email){
-        if(email.isEmpty() || email==null){
+        if(email==null){
             PIN_CONFIG_PREFERENCE_KEY = null;
         }
         else{
