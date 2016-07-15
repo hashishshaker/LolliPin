@@ -35,6 +35,10 @@ public class LockManager<T extends AppLockActivity> {
         return mInstance;
     }
 
+    /**
+     * You must call that into your custom {@link android.app.Application} to enable the
+     * {@link com.github.orangegangsters.lollipin.lib.PinActivity}
+     */
     public void enableAppLock(Context context, Class<T> activityClass) {
         if (mAppLocker != null) {
             mAppLocker.disable();
@@ -45,7 +49,8 @@ public class LockManager<T extends AppLockActivity> {
 
     /**
      * You must call that into your custom {@link android.app.Application} to enable the
-     * {@link com.github.orangegangsters.lollipin.lib.PinActivity}
+     * {@link com.github.orangegangsters.lollipin.lib.PinActivity}. Ties the Pinconfig to
+     * a particular email.
      */
     public void enableAppLock(Context context, Class<T> activityClass, String email) {
         if (mAppLocker != null) {
