@@ -52,8 +52,12 @@ public class LockManager<T extends AppLockActivity> {
             mAppLocker.disable();
         }
         mAppLocker = AppLockImpl.getInstance(context, activityClass);
-        mAppLocker.setPinConfig(new PinConfig());
         mAppLocker.setSharedPrefKey(email);
+        if (mAppLocker.getConfigFromPref() == null) {
+            mAppLocker.setPinConfig(new PinConfig());
+        } else {
+            mAppLocker.setPinConfig(mAppLocker.getConfigFromPref());
+        }
         mAppLocker.enable();
     }
 

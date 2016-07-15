@@ -210,4 +210,8 @@ public abstract class AppLock {
     public abstract void setSharedPrefKey(String email);
 
     public abstract void setPinConfig(PinConfig pinConfig);
+
+    public abstract void putConfigInPref();
+
+    public abstract PinConfig getConfigFromPref();
 }
