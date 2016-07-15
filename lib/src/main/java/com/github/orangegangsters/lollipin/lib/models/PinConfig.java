@@ -1,5 +1,7 @@
 package com.github.orangegangsters.lollipin.lib.models;
 
+import com.github.orangegangsters.lollipin.lib.enums.Algorithm;
+import com.github.orangegangsters.lollipin.lib.managers.AppLockActivity;
 import com.google.gson.Gson;
 
 /**
@@ -7,16 +9,48 @@ import com.google.gson.Gson;
  */
 public class PinConfig {
 
+    /**
+     * Stores the password
+     */
     private String passCode;
+    /**
+     * Stores the {@link Algorithm}
+     */
     private String algorithmString;
+    /**
+     * Stores the last active time
+     */
     private long lastActiveMills;
+    /**
+     * Stores the timeout.
+     */
     private long timeoutMills;
+    /**
+     * Stores the logo resource id.
+     */
     private int logoId;
+    /**
+     * Stores the forgot option.
+     */
     private boolean showForgot;
+    /**
+     * Stores the background timeout option.
+     */
     private boolean onlyBackgroundTimeout;
+    /**
+     * Stores whether the user has backed out of the {@link AppLockActivity}
+     */
     private boolean pinChallengeCancelled;
+    /**
+     * Stores the dynamically generated password salt.
+     */
     private String passwordSalt;
-    private boolean fingerPrintAuthEnabled;
+    /**
+     * Stores whether the caller has enabled fingerprint authentication.
+     * Defaults to true for backwards compatibility.
+     */
+    private boolean fingerPrintAuthEnabled = true;
+
 
     public String getPassCode() {
         return passCode;

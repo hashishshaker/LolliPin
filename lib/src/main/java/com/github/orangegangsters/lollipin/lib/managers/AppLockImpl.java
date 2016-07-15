@@ -24,52 +24,12 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
 
     public static final String TAG = "AppLockImpl";
     /**
-     * The {@link android.content.SharedPreferences} key used to store the password
-     */
-    private static final String PASSWORD_PREFERENCE_KEY = "PASSCODE";
-    /**
-     * The {@link android.content.SharedPreferences} key used to store the {@link Algorithm}
-     */
-    private static final String PASSWORD_ALGORITHM_PREFERENCE_KEY = "ALGORITHM";
-    /**
-     * The {@link android.content.SharedPreferences} key used to store the last active time
-     */
-    private static final String LAST_ACTIVE_MILLIS_PREFERENCE_KEY = "LAST_ACTIVE_MILLIS";
-    /**
-     * The {@link android.content.SharedPreferences} key used to store the timeout
-     */
-    private static final String TIMEOUT_MILLIS_PREFERENCE_KEY = "TIMEOUT_MILLIS_PREFERENCE_KEY";
-    /**
-     * The {@link android.content.SharedPreferences} key used to store the logo resource id
-     */
-    private static final String LOGO_ID_PREFERENCE_KEY = "LOGO_ID_PREFERENCE_KEY";
-    /**
-     * The {@link android.content.SharedPreferences} key used to store the forgot option
-     */
-    private static final String SHOW_FORGOT_PREFERENCE_KEY = "SHOW_FORGOT_PREFERENCE_KEY";
-
-    /**
-     * The {@link android.content.SharedPreferences} key used to store the only background timeout option
-     */
-    private static final String ONLY_BACKGROUND_TIMEOUT_PREFERENCE_KEY = "ONLY_BACKGROUND_TIMEOUT_PREFERENCE_KEY";
-    /**
-     * The {@link SharedPreferences} key used to store whether the user has backed out of the {@link AppLockActivity}
-     */
-    private static final String PIN_CHALLENGE_CANCELLED_PREFERENCE_KEY = "PIN_CHALLENGE_CANCELLED_PREFERENCE_KEY";
-    /**
-     * The {@link android.content.SharedPreferences} key used to store the dynamically generated password salt
-     */
-    private static final String PASSWORD_SALT_PREFERENCE_KEY = "PASSWORD_SALT_PREFERENCE_KEY";
-    /**
-     * The {@link SharedPreferences} key used to store whether the caller has enabled fingerprint authentication.
-     * This value defaults to true for backwards compatibility.
-     */
-    private static final String FINGERPRINT_AUTH_ENABLED_PREFERENCE_KEY = "FINGERPRINT_AUTH_ENABLED_PREFERENCE_KEY";
-    /**
-     *
+     * The {@link SharedPreferences} key used to store the PinConfig pojo.
      */
     private String PIN_CONFIG_PREFERENCE_KEY;
-
+    /**
+     * The prefix attached to the {@value #PIN_CONFIG_PREFERENCE_PREFIX}
+     */
     private static final String PIN_CONFIG_PREFERENCE_PREFIX = "PIN_CONFIG_PREFERENCE_KEY";
     /**
      * The default password salt
@@ -102,8 +62,9 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
      * Static instance of {@link AppLockImpl}
      */
     private static AppLockImpl mInstance;
-
-
+    /**
+     * Stores the pin related configuration.
+     */
     private PinConfig pinConfig;
 
     /**
@@ -132,12 +93,9 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
     public void setTimeout(long timeout) {
         pinConfig.setTimeoutMills(timeout);
         putConfigInPref();
-//        editor.putLong(TIMEOUT_MILLIS_PREFERENCE_KEY, timeout);
-
     }
 
     public String getSalt() {
-//        String salt = mSharedPreferences.getString(PASSWORD_SALT_PREFERENCE_KEY, null);
         String salt = getConfigFromPref().getPasswordSalt();
         if (salt == null) {
             salt = generateSalt();
@@ -149,7 +107,6 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
     private void setSalt(String salt) {
         pinConfig.setPasswordSalt(salt);
         putConfigInPref();
-//        editor.putString(PASSWORD_SALT_PREFERENCE_KEY, salt);
     }
 
     private String generateSalt() {
@@ -168,21 +125,16 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
     @Override
     public long getTimeout() {
         return getConfigFromPref().getTimeoutMills();
-//        return mSharedPreferences.getLong(TIMEOUT_MILLIS_PREFERENCE_KEY, DEFAULT_TIMEOUT);
     }
 
     @Override
     public void setLogoId(int logoId) {
         pinConfig.setLogoId(logoId);
         putConfigInPref();
-        /*SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt(LOGO_ID_PREFERENCE_KEY, logoId);
-        editor.apply();*/
     }
 
     @Override
     public int getLogoId() {
-//        return mSharedPreferences.getInt(LOGO_ID_PREFERENCE_KEY, LOGO_ID_NONE);
         return getConfigFromPref().getLogoId();
     }
 
@@ -190,45 +142,33 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
     public void setShouldShowForgot(boolean showForgot) {
         pinConfig.setShowForgot(showForgot);
         putConfigInPref();
-        /*SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(SHOW_FORGOT_PREFERENCE_KEY, showForgot);
-        editor.apply();*/
     }
 
     @Override
     public boolean pinChallengeCancelled() {
         return getConfigFromPref().isPinChallengeCancelled();
-//        return mSharedPreferences.getBoolean(PIN_CHALLENGE_CANCELLED_PREFERENCE_KEY, false);
     }
 
     @Override
     public void setPinChallengeCancelled(boolean backedOut) {
         pinConfig.setPinChallengeCancelled(backedOut);
         putConfigInPref();
-        /*SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(PIN_CHALLENGE_CANCELLED_PREFERENCE_KEY, backedOut);
-        editor.apply();*/
     }
 
     @Override
     public boolean shouldShowForgot() {
         return getConfigFromPref().shouldShowForgot();
-//        return mSharedPreferences.getBoolean(SHOW_FORGOT_PREFERENCE_KEY, true);
     }
 
     @Override
     public boolean onlyBackgroundTimeout() {
         return getConfigFromPref().isOnlyBackgroundTimeout();
-//        return mSharedPreferences.getBoolean(ONLY_BACKGROUND_TIMEOUT_PREFERENCE_KEY, false);
     }
 
     @Override
     public void setOnlyBackgroundTimeout(boolean onlyBackgroundTimeout) {
         pinConfig.setOnlyBackgroundTimeout(onlyBackgroundTimeout);
         putConfigInPref();
-        /*SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(ONLY_BACKGROUND_TIMEOUT_PREFERENCE_KEY, onlyBackgroundTimeout);
-        editor.apply();*/
     }
 
     @Override
@@ -252,50 +192,32 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
         PinFragmentActivity.clearListeners();
         mSharedPreferences.edit().remove(PIN_CONFIG_PREFERENCE_KEY)
                 .apply();
-        /*mSharedPreferences.edit().remove(PASSWORD_PREFERENCE_KEY)
-                .remove(LAST_ACTIVE_MILLIS_PREFERENCE_KEY)
-                .remove(PASSWORD_ALGORITHM_PREFERENCE_KEY)
-                .remove(TIMEOUT_MILLIS_PREFERENCE_KEY)
-                .remove(LOGO_ID_PREFERENCE_KEY)
-                .remove(SHOW_FORGOT_PREFERENCE_KEY)
-                .remove(FINGERPRINT_AUTH_ENABLED_PREFERENCE_KEY)
-                .remove(ONLY_BACKGROUND_TIMEOUT_PREFERENCE_KEY)
-                .apply();*/
     }
 
     @Override
     public long getLastActiveMillis() {
         return getConfigFromPref().getLastActiveMills();
-//        return mSharedPreferences.getLong(LAST_ACTIVE_MILLIS_PREFERENCE_KEY, 0);
     }
 
     @Override
     public boolean isFingerprintAuthEnabled() {
         return getConfigFromPref().isFingerPrintAuthEnabled();
-//        return mSharedPreferences.getBoolean(FINGERPRINT_AUTH_ENABLED_PREFERENCE_KEY, true);
     }
 
     @Override
     public void setFingerprintAuthEnabled(boolean enabled) {
         pinConfig.setFingerPrintAuthEnabled(enabled);
         putConfigInPref();
-        /*SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(FINGERPRINT_AUTH_ENABLED_PREFERENCE_KEY, enabled);
-        editor.apply();*/
     }
 
     @Override
     public void setLastActiveMillis() {
         pinConfig.setLastActiveMills(System.currentTimeMillis());
         putConfigInPref();
-        /*SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putLong(LAST_ACTIVE_MILLIS_PREFERENCE_KEY, System.currentTimeMillis());
-        editor.apply();*/
     }
 
     @Override
     public boolean checkPasscode(String passcode) {
-//        Algorithm algorithm = Algorithm.getFromText(mSharedPreferences.getString(PASSWORD_ALGORITHM_PREFERENCE_KEY, ""));
         PinConfig pinConfig = getConfigFromPref();
         Algorithm algorithm = Algorithm.getFromText(pinConfig.getAlgorithmString());
 
@@ -304,9 +226,6 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
         passcode = Encryptor.getSHA(passcode, algorithm);
         String storedPasscode = "";
 
-        /*if (mSharedPreferences.contains(PASSWORD_PREFERENCE_KEY)) {
-            storedPasscode = mSharedPreferences.getString(PASSWORD_PREFERENCE_KEY, "");
-        }*/
         if (pinConfig.getPassCode() != null) {
             storedPasscode = pinConfig.getPassCode();
         }
@@ -325,7 +244,6 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
 
         if (passcode == null) {
             pinConfig.setPassCode(null);
-//            editor.remove(PASSWORD_PREFERENCE_KEY);
             putConfigInPref();
             this.disable();
         } else {
@@ -335,8 +253,6 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
             pinConfig.setPassCode(passcode);
             putConfigInPref();
             this.enable();
-//            editor.putString(PASSWORD_PREFERENCE_KEY, passcode);
-//            editor.apply();
         }
 
         return true;
@@ -348,16 +264,10 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
     private void setAlgorithm(Algorithm algorithm) {
         pinConfig.setAlgorithmString(algorithm.getValue());
         putConfigInPref();
-        /*SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(PASSWORD_ALGORITHM_PREFERENCE_KEY, algorithm.getValue());
-        editor.apply();*/
     }
 
     @Override
     public boolean isPasscodeSet() {
-        /*if (mSharedPreferences.contains(PASSWORD_PREFERENCE_KEY)) {
-            return true;
-        }*/
         if(getConfigFromPref().getPassCode()!=null){
             return true;
         }
