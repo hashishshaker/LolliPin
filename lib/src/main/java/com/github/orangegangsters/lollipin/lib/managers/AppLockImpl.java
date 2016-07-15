@@ -456,13 +456,13 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
         }
     }
 
-    private void putConfigInPref() {
+    public void putConfigInPref() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(PIN_CONFIG_PREFERENCE_KEY, PinConfig.toJsonString(pinConfig));
         editor.apply();
     }
 
-    private PinConfig getConfigFromPref() {
+    public PinConfig getConfigFromPref() {
         return PinConfig.fromJson(mSharedPreferences.getString(PIN_CONFIG_PREFERENCE_KEY, null));
     }
 
