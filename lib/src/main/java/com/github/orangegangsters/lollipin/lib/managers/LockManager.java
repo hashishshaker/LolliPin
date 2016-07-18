@@ -87,6 +87,18 @@ public class LockManager<T extends AppLockActivity> {
     }
 
     /**
+     * Disables the app lock and removes configuration by calling {@link AppLock#disableAndRemoveConfiguration()}
+     */
+    public void disableAppLockAndRemoveConfiguration(){
+        if(mAppLocker != null){
+            mAppLocker.setPinConfig(null);
+            mAppLocker.setSharedPrefKey(null);
+            mAppLocker.disableAndRemoveConfiguration();
+        }
+        mAppLocker = null;
+    }
+
+    /**
      * Disables the previous app lock and set a new one
      */
     public void setAppLock(AppLock appLocker) {
