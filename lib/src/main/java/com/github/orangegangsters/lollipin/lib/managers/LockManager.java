@@ -91,9 +91,9 @@ public class LockManager<T extends AppLockActivity> {
      */
     public void disableAppLockAndRemoveConfiguration(){
         if(mAppLocker != null){
+            mAppLocker.disableAndRemoveConfiguration();
             mAppLocker.setPinConfig(null);
             mAppLocker.setSharedPrefKey(null);
-            mAppLocker.disableAndRemoveConfiguration();
         }
         mAppLocker = null;
     }
