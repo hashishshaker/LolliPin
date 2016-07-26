@@ -5,6 +5,7 @@ import android.content.Context;
 import com.github.orangegangsters.lollipin.lib.PinActivity;
 import com.github.orangegangsters.lollipin.lib.PinCompatActivity;
 import com.github.orangegangsters.lollipin.lib.PinFragmentActivity;
+import com.github.orangegangsters.lollipin.lib.models.PinConfig;
 
 /**
  * Allows to handle the {@link com.github.orangegangsters.lollipin.lib.managers.AppLock} from within
@@ -47,6 +48,25 @@ public class LockManager<T extends AppLockActivity> {
     }
 
     /**
+     * You must call that into your custom {@link android.app.Application} to enable the
+     * {@link com.github.orangegangsters.lollipin.lib.PinActivity}. Ties the Pinconfig to
+     * a particular email.
+     */
+    public void enableAppLock(Context context, Class<T> activityClass, String email) {
+        if (mAppLocker != null) {
+            mAppLocker.disable();
+        }
+        mAppLocker = AppLockImpl.getInstance(context, activityClass);
+        mAppLocker.setSharedPrefKey(email);
+        if (mAppLocker.getConfigFromPref() == null) {
+            mAppLocker.setPinConfig(new PinConfig());
+        } else {
+            mAppLocker.setPinConfig(mAppLocker.getConfigFromPref());
+        }
+        mAppLocker.enable();
+    }
+
+    /**
      * Tells the app if the {@link com.github.orangegangsters.lollipin.lib.managers.AppLock} is enabled or not
      */
     public boolean isAppLockEnabled() {
@@ -59,7 +79,21 @@ public class LockManager<T extends AppLockActivity> {
      */
     public void disableAppLock() {
         if (mAppLocker != null) {
+            mAppLocker.setPinConfig(null);
+            mAppLocker.setSharedPrefKey(null);
             mAppLocker.disable();
+        }
+        mAppLocker = null;
+    }
+
+    /**
+     * Disables the app lock and removes configuration by calling {@link AppLock#disableAndRemoveConfiguration()}
+     */
+    public void disableAppLockAndRemoveConfiguration(){
+        if(mAppLocker != null){
+            mAppLocker.disableAndRemoveConfiguration();
+            mAppLocker.setPinConfig(null);
+            mAppLocker.setSharedPrefKey(null);
         }
         mAppLocker = null;
     }
@@ -80,4 +114,5 @@ public class LockManager<T extends AppLockActivity> {
     public AppLock getAppLock() {
         return mAppLocker;
     }
+
 }

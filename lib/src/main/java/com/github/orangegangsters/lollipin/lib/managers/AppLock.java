@@ -2,11 +2,13 @@ package com.github.orangegangsters.lollipin.lib.managers;
 
 import android.app.Activity;
 
+import com.github.orangegangsters.lollipin.lib.models.PinConfig;
+
 import java.util.HashSet;
 
 public abstract class AppLock {
     /**
-     * ENABLE_PINLOCK type, uses at firt to define the password
+     * ENABLE_PINLOCK type, uses at first to define the password
      */
     public static final int ENABLE_PINLOCK = 0;
     /**
@@ -202,4 +204,14 @@ public abstract class AppLock {
      * Otherwise returns true
      */
     public abstract boolean shouldLockSceen(Activity activity);
+
+    public abstract String getSharedPrefKey();
+
+    public abstract void setSharedPrefKey(String email);
+
+    public abstract void setPinConfig(PinConfig pinConfig);
+
+    public abstract void putConfigInPref();
+
+    public abstract PinConfig getConfigFromPref();
 }
