@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.Nullable;
+import android.support.v7.view.ActionMode;
 import android.widget.Toast;
 
 import com.github.orangegangsters.lollipin.lib.managers.AppLockActivity;
@@ -16,6 +18,11 @@ import uk.me.lewisdeane.ldialogs.CustomDialog;
  * Created by oliviergoutay on 1/14/15.
  */
 public class CustomPinActivity extends AppLockActivity {
+
+    @Override
+    protected void injectDependencies() {
+        
+    }
 
     @Override
     public void showForgotDialog() {
@@ -76,5 +83,26 @@ public class CustomPinActivity extends AppLockActivity {
     @Override
     public int getPinLength() {
         return super.getPinLength();//you can override this method to change the pin length from the default 4
+    }
+
+    @Override
+    protected int getToolbarId() {
+        return 0;
+    }
+
+    @Override
+    public void onSupportActionModeStarted(ActionMode mode) {
+
+    }
+
+    @Override
+    public void onSupportActionModeFinished(ActionMode mode) {
+
+    }
+
+    @Nullable
+    @Override
+    public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
+        return null;
     }
 }
