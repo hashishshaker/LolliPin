@@ -76,14 +76,14 @@ public abstract class AppLockActivity
         delegate.setContentView(getContentView());
         initLayout(getIntent());
 
-        Toolbar toolbar = (Toolbar) findViewById(getToolbarId());
+        /*Toolbar toolbar = (Toolbar) findViewById(getToolbarId());
         delegate.setSupportActionBar(toolbar);
 
         ActionBar actionBar = delegate.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
-        }
-
+        }*/
+        initToolbar();
         injectDependencies();
         if (mType == AppLock.ENABLE_PINLOCK || mType == AppLock.CHANGE_PIN) {
             mForgotTextView.setVisibility(View.INVISIBLE);
@@ -91,6 +91,8 @@ public abstract class AppLockActivity
             mForgotTextView.setVisibility(View.VISIBLE);
         }
     }
+
+    protected abstract void initToolbar();
 
     /**
      * Inject Dagger dependencies.
@@ -504,10 +506,4 @@ public abstract class AppLockActivity
     public Class<? extends AppLockActivity> getCustomAppLockActivityClass() {
         return this.getClass();
     }
-
-    /**
-     * Pass in the toolbarId
-     * @return
-     */
-    protected abstract int getToolbarId();
 }

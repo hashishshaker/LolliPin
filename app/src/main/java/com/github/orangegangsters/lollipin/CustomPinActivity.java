@@ -20,8 +20,13 @@ import uk.me.lewisdeane.ldialogs.CustomDialog;
 public class CustomPinActivity extends AppLockActivity {
 
     @Override
+    protected void initToolbar() {
+
+    }
+
+    @Override
     protected void injectDependencies() {
-        
+
     }
 
     @Override
@@ -83,11 +88,6 @@ public class CustomPinActivity extends AppLockActivity {
     @Override
     public int getPinLength() {
         return super.getPinLength();//you can override this method to change the pin length from the default 4
-    }
-
-    @Override
-    protected int getToolbarId() {
-        return 0;
     }
 
     @Override
