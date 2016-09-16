@@ -6,6 +6,10 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatCallback;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -29,11 +33,16 @@ import java.util.List;
  * Call this activity in normal or singleTop mode (not singleTask or singleInstance, it does not work
  * with {@link android.app.Activity#startActivityForResult(android.content.Intent, int)}).
  */
-public abstract class AppLockActivity extends PinActivity implements KeyboardButtonClickedListener, View.OnClickListener, FingerprintUiHelper.Callback {
+public abstract class AppLockActivity
+        extends PinActivity
+        implements KeyboardButtonClickedListener, View.OnClickListener,
+        FingerprintUiHelper.Callback, AppCompatCallback {
 
     public static final String TAG = AppLockActivity.class.getSimpleName();
     public static final String ACTION_CANCEL = TAG + ".actionCancelled";
     private static final int DEFAULT_PIN_LENGTH = 4;
+
+    protected AppCompatDelegate delegate;
 
     protected TextView mStepTextView;
     protected TextView mForgotTextView;
@@ -43,7 +52,6 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
     protected TextView mFingerprintTextView;
 
     protected LockManager mLockManager;
-
 
     protected FingerprintManager mFingerprintManager;
     protected FingerprintUiHelper mFingerprintUiHelper;
@@ -63,9 +71,31 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(getContentView());
+        delegate = AppCompatDelegate.create(this, this);
+        delegate.onCreate(savedInstanceState);
+        delegate.setContentView(getContentView());
         initLayout(getIntent());
+
+        Toolbar toolbar = (Toolbar) findViewById(getToolbarId());
+        delegate.setSupportActionBar(toolbar);
+
+        ActionBar actionBar = delegate.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
+        injectDependencies();
+        if (mType == AppLock.ENABLE_PINLOCK || mType == AppLock.CHANGE_PIN) {
+            mForgotTextView.setVisibility(View.INVISIBLE);
+        } else {
+            mForgotTextView.setVisibility(View.VISIBLE);
+        }
     }
+
+    /**
+     * Inject Dagger dependencies.
+     */
+    protected abstract void injectDependencies();
 
     /**
      * If called in singleTop mode
@@ -408,13 +438,13 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
         mPinCodeRoundView.refresh(mPinCode.length());
     }
 
-
     /**
      * Returns the type of this {@link com.github.orangegangsters.lollipin.lib.managers.AppLockActivity}
      */
     public int getType() {
         return mType;
     }
+
 
     /**
      * When we click on the {@link #mForgotTextView} handle the pop-up
@@ -474,4 +504,10 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
     public Class<? extends AppLockActivity> getCustomAppLockActivityClass() {
         return this.getClass();
     }
+
+    /**
+     * Pass in the toolbarId
+     * @return
+     */
+    protected abstract int getToolbarId();
 }
