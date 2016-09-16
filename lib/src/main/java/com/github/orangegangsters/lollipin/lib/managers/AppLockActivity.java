@@ -76,14 +76,6 @@ public abstract class AppLockActivity
         delegate.setContentView(getContentView());
         initLayout(getIntent());
 
-        /*Toolbar toolbar = (Toolbar) findViewById(getToolbarId());
-        delegate.setSupportActionBar(toolbar);
-
-        ActionBar actionBar = delegate.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-        }*/
-//        initToolbar();
         injectDependencies();
         if (mType == AppLock.ENABLE_PINLOCK || mType == AppLock.CHANGE_PIN) {
             mForgotTextView.setVisibility(View.INVISIBLE);
@@ -91,13 +83,6 @@ public abstract class AppLockActivity
             mForgotTextView.setVisibility(View.VISIBLE);
         }
     }
-
-//    protected abstract void initToolbar();
-
-    /**
-     * Inject Dagger dependencies.
-     */
-    protected abstract void injectDependencies();
 
     /**
      * If called in singleTop mode
@@ -404,12 +389,6 @@ public abstract class AppLockActivity
     }
 
     /**
-     * Displays the information dialog when the user clicks the
-     * {@link #mForgotTextView}
-     */
-    public abstract void showForgotDialog();
-
-    /**
      * Run a shake animation when the password is not valid.
      */
     protected void onPinCodeError() {
@@ -460,20 +439,6 @@ public abstract class AppLockActivity
     }
 
     /**
-     * When the user has failed a pin challenge
-     *
-     * @param attempts the number of attempts the user has used
-     */
-    public abstract void onPinFailure(int attempts);
-
-    /**
-     * When the user has succeeded at a pin challenge
-     *
-     * @param attempts the number of attempts the user had used
-     */
-    public abstract void onPinSuccess(int attempts);
-
-    /**
      * Gets the resource id to the {@link View} to be set with {@link #setContentView(int)}.
      * The custom layout must include the following:
      * - {@link TextView} with an id of pin_code_step_textview
@@ -506,4 +471,29 @@ public abstract class AppLockActivity
     public Class<? extends AppLockActivity> getCustomAppLockActivityClass() {
         return this.getClass();
     }
+
+    /**
+     * When the user has failed a pin challenge
+     *
+     * @param attempts the number of attempts the user has used
+     */
+    public abstract void onPinFailure(int attempts);
+
+    /**
+     * When the user has succeeded at a pin challenge
+     *
+     * @param attempts the number of attempts the user had used
+     */
+    public abstract void onPinSuccess(int attempts);
+
+    /**
+     * Inject Dagger dependencies.
+     */
+    protected abstract void injectDependencies();
+
+    /**
+     * Displays the information dialog when the user clicks the
+     * {@link #mForgotTextView}
+     */
+    public abstract void showForgotDialog();
 }

@@ -19,11 +19,6 @@ import uk.me.lewisdeane.ldialogs.CustomDialog;
  */
 public class CustomPinActivity extends AppLockActivity {
 
-    /*@Override
-    protected void initToolbar() {
-
-    }*/
-
     @Override
     protected void injectDependencies() {
 
