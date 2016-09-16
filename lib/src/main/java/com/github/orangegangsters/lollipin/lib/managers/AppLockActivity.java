@@ -83,7 +83,7 @@ public abstract class AppLockActivity
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
         }*/
-        initToolbar();
+//        initToolbar();
         injectDependencies();
         if (mType == AppLock.ENABLE_PINLOCK || mType == AppLock.CHANGE_PIN) {
             mForgotTextView.setVisibility(View.INVISIBLE);
@@ -92,7 +92,7 @@ public abstract class AppLockActivity
         }
     }
 
-    protected abstract void initToolbar();
+//    protected abstract void initToolbar();
 
     /**
      * Inject Dagger dependencies.
