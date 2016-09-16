@@ -95,7 +95,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
     /**
      * Init completely the layout, depending of the extra {@link com.github.orangegangsters.lollipin.lib.managers.AppLock#EXTRA_TYPE}
      */
-    private void initLayout(Intent intent) {
+    protected void initLayout(Intent intent) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
             //Animate if greater than 2.3.3
             overridePendingTransition(R.anim.nothing, R.anim.nothing);
@@ -137,7 +137,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
      * Init {@link FingerprintManager} of the {@link android.os.Build.VERSION#SDK_INT} is > to Marshmallow
      * and {@link FingerprintManager#isHardwareDetected()}.
      */
-    private void initLayoutForFingerprint() {
+    protected void initLayoutForFingerprint() {
         mFingerprintImageView = (ImageView) this.findViewById(R.id.pin_code_fingerprint_imageview);
         mFingerprintTextView = (TextView) this.findViewById(R.id.pin_code_fingerprint_textview);
         if (mType == AppLock.UNLOCK_PIN && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -169,7 +169,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
      * {@link NullPointerException}.
      */
     @SuppressWarnings("unchecked")
-    private void enableAppLockerIfDoesNotExist() {
+    protected void enableAppLockerIfDoesNotExist() {
         try {
             if (mLockManager.getAppLock() == null) {
                 mLockManager.enableAppLock(this, getCustomAppLockActivityClass());
