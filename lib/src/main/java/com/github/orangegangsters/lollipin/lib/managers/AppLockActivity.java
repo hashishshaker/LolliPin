@@ -199,7 +199,7 @@ public abstract class AppLockActivity
     /**
      * Init the {@link #mStepTextView} based on {@link #mType}
      */
-    private void setStepText() {
+    protected void setStepText() {
         mStepTextView.setText(getStepText(mType));
     }
 
