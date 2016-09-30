@@ -70,13 +70,13 @@ public abstract class AppLockActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        injectDependencies();
 
         delegate = AppCompatDelegate.create(this, this);
         delegate.onCreate(savedInstanceState);
         delegate.setContentView(getContentView());
         initLayout(getIntent());
 
-        injectDependencies();
         if (mType == AppLock.ENABLE_PINLOCK || mType == AppLock.CHANGE_PIN) {
             mForgotTextView.setVisibility(View.INVISIBLE);
         } else {
